@@ -25,7 +25,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /hosthome/jbujny/zookeeper-data
+    path: /mnt/zookeeper-data
   nodeAffinity:
     required:
       nodeSelectorTerms:
