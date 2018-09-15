@@ -1,23 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka
+  name: postgres
   labels:
-    app: kafka
+    app: postgres
 spec:
   ports:
-  - port: 9092
-    name: kafka
+  - port: 5432
+    name: postgres
   clusterIP: None
   selector:
-    app: kafka
+    app: postgres
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: kafka-data-pv
+  name: postgres-data-pv
   labels:
-    kafka: data
+    postgres: data
 spec:
   capacity:
     storage: 1Gi
@@ -27,7 +27,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /mnt/kafka-data
+    path: /mnt/postgres-data
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -41,44 +41,40 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: kafka
+  name: postgres
 spec:
   selector:
     matchLabels:
-      app: kafka
-  serviceName: "kafka"
+      app: postgres
+  serviceName: "postgres"
   replicas: 1
   template:
     metadata:
       labels:
-        app: kafka
+        app: postgres
     spec:
       terminationGracePeriodSeconds: 30
       containers:
-      - name: kafka
-        image: wurstmeister/kafka:2.11-2.0.0
+      - name: postgres
+        image: postgres:10.5
         env:
-        - name: KAFKA_ZOOKEEPER_CONNECT
-          value: zookeeper:2181
-        - name: KAFKA_ADVERTISED_HOST_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+        - name: POSTGRES_PASSWORD
+          value: postgres
         ports:
-        - containerPort: 9092
-          name: kafka
+        - containerPort: 5432
+          name: postgres
         volumeMounts:
-        - name: kafka-data-pv-claim
-          mountPath: /kafka
+        - name: postgres-data-pv-claim
+          mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
-        name: kafka-data-pv-claim
+        name: postgres-data-pv-claim
       spec:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: local-storage
         selector:
           matchLabels:
-            kafka: data
+            postgres: data
         resources:
           requests:
             storage: 1Gi

@@ -16,8 +16,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: zookeeper-data-pv
-  labels:
-    zookeeper: data
+  zookeeper: data
 spec:
   capacity:
     storage: 1Gi
@@ -42,8 +41,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: zookeeper-conf-pv
-  labels:
-    zookeeper: conf
+  zookeeper: conf
 spec:
   capacity:
     storage: 1Gi
