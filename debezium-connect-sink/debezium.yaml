@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: debezium-connect-sink
+  labels:
+    app: debezium-connect-sink
+spec:
+  ports:
+  - port: 8083
+    targetPort: 8083
+    name: debezium-connect-sink
+    nodePort: 30001
+  type: NodePort
+  selector:
+    app: debezium-connect-sink
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-connect-sink
+spec:
+  selector:
+    matchLabels:
+      app: debezium-connect-sink
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: debezium-connect-sink
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: debezium-connect-sink
+        image: debezium/connect:0.8
+        env:
+        - name: BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: GROUP_ID
+          value: debezium-connect-sink
+        - name: CONFIG_STORAGE_TOPIC
+          value: debezium-connect-sink_config
+        - name: OFFSET_STORAGE_TOPIC
+          value: debezium-connect-sink_offset
+        ports:
+        - containerPort: 8083
+          name: dm-c-sink
+

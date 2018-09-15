@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: debezium-connect-source
+  labels:
+    app: debezium-connect-source
+spec:
+  ports:
+  - port: 8083
+    targetPort: 8083
+    name: debezium-connect-source
+    nodePort: 30001
+  type: NodePort
+  selector:
+    app: debezium-connect-source
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-connect-source
+spec:
+  selector:
+    matchLabels:
+      app: debezium-connect-source
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: debezium-connect-source
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: debezium-connect-source
+        image: debezium/connect:0.8
+        env:
+        - name: BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: GROUP_ID
+          value: debezium-connect-source
+        - name: CONFIG_STORAGE_TOPIC
+          value: debezium-connect-source_config
+        - name: OFFSET_STORAGE_TOPIC
+          value: debezium-connect-source_offset
+        ports:
+        - containerPort: 8083
+          name: dm-c-source
+
