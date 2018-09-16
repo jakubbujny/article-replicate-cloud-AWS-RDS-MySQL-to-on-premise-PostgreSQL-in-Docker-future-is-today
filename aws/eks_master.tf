@@ -36,12 +36,12 @@ resource "aws_eks_cluster" "eks" {
 
   vpc_config {
     security_group_ids = ["${aws_security_group.eks-cluster.id}"]
-    subnet_ids         = ["${aws_subnet.demo.*.id}"]
+    subnet_ids         = ["${aws_subnet.eks_a.id}","${aws_subnet.eks_b.id}"]
   }
 
   depends_on = [
-    "aws_iam_role_policy_attachment.demo-cluster-AmazonEKSClusterPolicy",
-    "aws_iam_role_policy_attachment.demo-cluster-AmazonEKSServicePolicy",
+    "aws_iam_role_policy_attachment.AmazonEKSClusterPolicy",
+    "aws_iam_role_policy_attachment.AmazonEKSServicePolicy",
   ]
 }
 

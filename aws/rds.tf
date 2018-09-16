@@ -3,6 +3,7 @@ resource "aws_db_instance" "default" {
   publicly_accessible = false
   skip_final_snapshot = true
   identifier = "mymysql"
+  availability_zone = "${local.region}a"
   allocated_storage    = 5
   storage_type         = "gp2"
   engine               = "mysql"
@@ -17,5 +18,5 @@ resource "aws_db_instance" "default" {
 
 resource "aws_db_subnet_group" "rds" {
   name = "rds"
-  subnet_ids = ["${aws_subnet.rds.id}"]
+  subnet_ids = ["${aws_subnet.rds_a.id}","${aws_subnet.rds_b.id}"]
 }
