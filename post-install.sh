@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-terraform output kubeconfig > kubeconfig.yaml
+cd aws
 
-terraform output config-map-aws-auth > config-map-aws-auth.yaml
+terraform output kubeconfig > ../kubeconfig.yaml
+
+terraform output config-map-aws-auth > ../config-map-aws-auth.yaml
+
+cd ..
 
 ./kubectl.sh apply -f config-map-aws-auth.yaml
 

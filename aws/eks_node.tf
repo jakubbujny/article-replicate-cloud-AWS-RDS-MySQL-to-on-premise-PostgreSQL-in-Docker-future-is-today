@@ -66,7 +66,7 @@ resource "aws_launch_configuration" "node" {
 
   root_block_device {
     delete_on_termination = true
-    volume_size = 5
+    volume_size = 20
     volume_type = "gp2"
   }
 
