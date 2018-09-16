@@ -177,6 +177,16 @@ resource "aws_security_group_rule" "eks-node-ingress-self" {
   type                     = "ingress"
 }
 
+resource "aws_security_group_rule" "eks-node-ingress-kafka" {
+  description              = "Allow node to communicate with each other"
+  from_port                = 30002
+  to_port                  = 30002
+  protocol                 = "tcp"
+  security_group_id        = "${aws_security_group.eks-node.id}"
+  cidr_blocks              = ["0.0.0.0/0"]
+  type                     = "ingress"
+}
+
 resource "aws_security_group_rule" "eks-node-ingress-cluster" {
   description              = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
   from_port                = 1025

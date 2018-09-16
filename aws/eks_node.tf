@@ -64,6 +64,12 @@ resource "aws_launch_configuration" "node" {
   security_groups             = ["${aws_security_group.eks-node.id}"]
   user_data_base64            = "${base64encode(local.eks-node-userdata)}"
 
+  root_block_device {
+    delete_on_termination = true
+    volume_size = 5
+    volume_type = "gp2"
+  }
+
   lifecycle {
     create_before_destroy = true
   }

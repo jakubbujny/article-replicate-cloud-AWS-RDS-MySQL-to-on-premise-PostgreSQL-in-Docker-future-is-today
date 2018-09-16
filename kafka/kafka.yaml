@@ -12,30 +12,22 @@ spec:
   selector:
     app: kafka
 ---
+
 apiVersion: v1
-kind: PersistentVolume
+kind: Service
 metadata:
-  name: kafka-data-pv
+  name: kafka-node
   labels:
-    kafka: data
+    app: kafka-node
 spec:
-  capacity:
-    storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /mnt/kafka-data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-             - minikube
+  ports:
+  - port: 9092
+    targetPort: 9092
+    name: kafka
+    nodePort: 30002
+  type: NodePort
+  selector:
+    app: kafka
 
 ---
 apiVersion: apps/v1
@@ -60,10 +52,10 @@ spec:
         env:
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: zookeeper:2181
-        - name: KAFKA_ADVERTISED_HOST_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: PLAINTEXT://46.137.63.90:30002
+        - name: KAFKA_LISTENERS
+          value: PLAINTEXT://:9092
         ports:
         - containerPort: 9092
           name: kafka
@@ -75,10 +67,7 @@ spec:
         name: kafka-data-pv-claim
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: local-storage
-        selector:
-          matchLabels:
-            kafka: data
+        storageClassName: ebs
         resources:
           requests:
             storage: 1Gi

@@ -12,62 +12,12 @@ spec:
   selector:
     app: zookeeper
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: zookeeper-data-pv
-  labels:
-    zookeeper: data
-spec:
-  capacity:
-    storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /mnt/zookeeper-data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-             - minikube
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: zookeeper-conf-pv
-  labels:
-    zookeeper: conf
-spec:
-  capacity:
-    storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /mnt/zookeeper-conf
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-             - minikube
-
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: zookeeper
+  labels:
+    app: zookeeper
 spec:
   selector:
     matchLabels:
@@ -94,10 +44,7 @@ spec:
         name: zookeeper-data-pv-claim
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: local-storage
-        selector:
-            matchLabels:
-              zookeeper: data
+        storageClassName: ebs
         resources:
           requests:
             storage: 1Gi
@@ -105,10 +52,7 @@ spec:
         name: zookeeper-conf-pv-claim
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: local-storage
-        selector:
-          matchLabels:
-            zookeeper: conf
+        storageClassName: ebs
         resources:
           requests:
             storage: 1Gi
