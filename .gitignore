@@ -1,2 +1,6 @@
 *.iml
 .idea
+
+config-map-aws-auth.yaml
+
+kubeconfig.yaml

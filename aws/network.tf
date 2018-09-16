@@ -178,9 +178,19 @@ resource "aws_security_group_rule" "eks-node-ingress-self" {
 }
 
 resource "aws_security_group_rule" "eks-node-ingress-kafka" {
-  description              = "Allow node to communicate with each other"
+  description              = "Allow kafka communication"
   from_port                = 30002
   to_port                  = 30002
+  protocol                 = "tcp"
+  security_group_id        = "${aws_security_group.eks-node.id}"
+  cidr_blocks              = ["0.0.0.0/0"]
+  type                     = "ingress"
+}
+
+resource "aws_security_group_rule" "eks-node-ingress-debezium" {
+  description              = "Allow debezium connection"
+  from_port                = 30001
+  to_port                  = 30001
   protocol                 = "tcp"
   security_group_id        = "${aws_security_group.eks-node.id}"
   cidr_blocks              = ["0.0.0.0/0"]

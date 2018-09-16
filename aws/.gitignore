@@ -1,8 +1,4 @@
 terraform.tfstate
 terraform.tfstate.backup
 
-config-map-aws-auth.yaml
-
-kubeconfig.yaml
-
 .terraform
