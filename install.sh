@@ -19,3 +19,16 @@ cd ..
 ./kubectl.sh apply -f aws/eks-admin-cluster-role-binding.yaml
 
 ./kubectl.sh apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+cd kafka
+./deploy.sh
+cd ..
+
+./kubectl.sh apply -f debezium-connect-source/debezium.yaml
+
+cd debezium-connect-source
+
+./configure.sh
+
+cd ..
+
