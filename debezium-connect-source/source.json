@@ -11,6 +11,10 @@
     "database.server.name": "mydebezium",
     "database.whitelist": "mydb",
     "database.history.kafka.bootstrap.servers": "kafka:9092",
-    "database.history.kafka.topic": "schema-changes.mydb"
+    "database.history.kafka.topic": "schema-changes.mydb",
+    "transforms": "route",
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "([^.]+)\\.([^.]+)\\.([^.]+)",
+    "transforms.route.replacement": "$3"
   }
 }
