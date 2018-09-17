@@ -1,6 +1,6 @@
 resource "aws_db_instance" "default" {
   apply_immediately = true
-  publicly_accessible = false
+  publicly_accessible = true
   skip_final_snapshot = true
   identifier = "mymysql"
   availability_zone = "${local.region}a"

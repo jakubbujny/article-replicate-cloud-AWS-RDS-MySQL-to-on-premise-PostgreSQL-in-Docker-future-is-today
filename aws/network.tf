@@ -139,7 +139,7 @@ resource "aws_security_group" "rds" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${local.vpc_first_2_octets}.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags {

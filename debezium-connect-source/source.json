@@ -8,7 +8,7 @@
     "database.user": "mymysql",
     "database.password": "mysqlmysql",
     "database.server.id": "184054",
-    "database.server.name": "dbserver1",
+    "database.server.name": "mydebezium",
     "database.whitelist": "mydb",
     "database.history.kafka.bootstrap.servers": "kafka:9092",
     "database.history.kafka.topic": "schema-changes.mydb"
