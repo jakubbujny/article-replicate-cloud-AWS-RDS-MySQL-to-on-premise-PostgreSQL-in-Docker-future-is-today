@@ -5,11 +5,13 @@ volumes:
 
 services:
   debezium:
-    image: debezium/connect:0.8
+    image: debezium/connect-jdbc:0.8
+    build:
+      context: .
     ports:
       - 8083:8083
     environment:
-      - BOOTSTRAP_SERVER=${PUBLIC_NODE_IP}:30002
+      - BOOTSTRAP_SERVERS=${PUBLIC_NODE_IP}:30002
       - GROUP_ID=debezium-connect-sink
       - CONFIG_STORAGE_TOPIC=debezium-connect-sink_config
       - OFFSET_STORAGE_TOPIC=debezium-connect-sink_offset
