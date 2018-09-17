@@ -8,6 +8,8 @@ terraform output kubeconfig > ../kubeconfig.yaml
 
 terraform output config-map-aws-auth > ../config-map-aws-auth.yaml
 
+terraform output rds-endpoint > ../sql-scripts/rds-endpoint
+
 cd ..
 
 ./kubectl.sh apply -f config-map-aws-auth.yaml

@@ -1,4 +1,4 @@
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "rds" {
   apply_immediately = true
   publicly_accessible = true
   skip_final_snapshot = true
@@ -23,4 +23,9 @@ resource "aws_db_instance" "default" {
 resource "aws_db_subnet_group" "rds" {
   name = "rds"
   subnet_ids = ["${aws_subnet.rds_a.id}","${aws_subnet.rds_b.id}"]
+}
+
+
+output "rds-endpoint" {
+  value = "${aws_db_instance.rds.endpoint}"
 }
