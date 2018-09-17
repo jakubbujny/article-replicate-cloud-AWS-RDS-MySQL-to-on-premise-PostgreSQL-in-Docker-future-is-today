@@ -2,9 +2,8 @@
 
 public_node_ip=$(../fetch-node-public-ip.sh | tr -d '"')
 
-is_debezium_ready () { curl --fail -H "Accept:application/json" $public_node_ip:8083/ }
 
-until is_debezium_ready; do
+until curl --fail --max-time 5 -H "Accept:application/json" $public_node_ip:30001/ ; do
     echo "Waiting for debezium to be available"
     sleep 2
 done
