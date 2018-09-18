@@ -15,9 +15,18 @@ resource "aws_db_instance" "rds" {
   db_subnet_group_name = "${aws_db_subnet_group.rds.name}"
   vpc_security_group_ids = ["${aws_security_group.rds.id}"]
   backup_retention_period = 1
-  parameter_group_name = "rds"
+  parameter_group_name = "${aws_db_parameter_group.rds.name}"
 }
 
+resource "aws_db_parameter_group" "rds" {
+  family = "mysql5.7"
+  name = "rds"
+
+  parameter {
+    name = "binlog_format"
+    value = "ROW"
+  }
+}
 
 
 resource "aws_db_subnet_group" "rds" {
