@@ -39,6 +39,8 @@ spec:
         volumeMounts:
         - name: zookeeper-data-pv-claim
           mountPath: /opt/zookeeper-3.4.6/data
+        - name: zookeeper-conf-pv-claim
+          mountPath: /opt/zookeeper-3.4.6/conf
   volumeClaimTemplates:
     - metadata:
         name: zookeeper-data-pv-claim
